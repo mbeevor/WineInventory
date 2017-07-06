@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- colour options on spinner -->
+    <string-array name="array_wine_colour">
+        <item>@string/colour_unknown</item>
+        <item>@string/colour_red</item>
+        <item>@string/colour_white</item>
+        <item>@string/colour_rose</item>
+    </string-array>
+
+
+</resources>

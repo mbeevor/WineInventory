@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Monocle Wines</string>
+
+    <!-- Text for empty list view -->
+    <string name="empty_view_text">There are no wines to display!</string>
+    <string name="empty_title_instruction_text">Click \'+\' to add a wine.</string>
+
+    <!-- title for text editor when creating a new wine -->
+    <string name="new_wine_editor_title">Add a Wine</string>
+
+    <!-- title for text editor when editing an existing wine -->
+    <string name="existing_wine_editor_title">Edit Wine</string>
+
+    <!-- Text for editor labels -->
+    <string name="name_editor_label">Wine Name</string>
+    <string name="name_hint">Wine Name</string>
+    <string name="grape_editor_label">Grape Name(s)</string>
+    <string name="grape_hint">Grape Name(s)</string>
+    <string name="wine_colour_label">Wine Colour</string>
+
+    <!-- Text for spinner options -->
+    <string name="colour_unknown">Unknown</string>
+    <string name="colour_red">Red</string>
+    <string name="colour_white">White</string>
+    <string name="colour_rose">Rose</string>
+
+
+</resources>
