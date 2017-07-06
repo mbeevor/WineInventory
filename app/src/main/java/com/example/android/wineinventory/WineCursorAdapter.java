@@ -16,8 +16,8 @@ import com.example.android.wineinventory.data.WineContract.WineEntry;
 
 public class WineCursorAdapter extends CursorAdapter {
 
-    public WineCursorAdapter(Context context,Cursor cursor) {
-        super(context, cursor, 0);
+    public WineCursorAdapter(Context context, Cursor data) {
+        super(context, data, 0);
     }
 
     /**
@@ -43,22 +43,22 @@ public class WineCursorAdapter extends CursorAdapter {
         TextView name = (TextView) view.findViewById(R.id.text_wine_name);
         TextView grape = (TextView) view.findViewById(R.id.text_wine_grape);
         TextView colour = (TextView) view.findViewById(R.id.text_wine_colour);
-        TextView price = (TextView) view.findViewById(R.id.text_wine_price);
-        TextView quantity = (TextView) view.findViewById(R.id.text_wine_quantity);
+//        TextView price = (TextView) view.findViewById(R.id.text_wine_price);
+//        TextView quantity = (TextView) view.findViewById(R.id.text_wine_quantity);
 
         // Extract information from cursor
         String wineName = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME));
         String wineGrape = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_GRAPE));
         String wineColour = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_COLOUR));
-        String winePrice = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE));
-        String wineQuantity = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY));
+//        String winePrice = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE));
+//        String wineQuantity = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY));
 
         // Populate fields with extracted properties
         name.setText(wineName);
         grape.setText(wineGrape);
         colour.setText(wineColour);
-        price.setText(winePrice);
-        quantity.setText(wineQuantity);
+//        price.setText(winePrice);
+//        quantity.setText(wineQuantity);
     }
 
 }

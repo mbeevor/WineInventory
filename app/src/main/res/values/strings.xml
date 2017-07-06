@@ -11,6 +11,10 @@
     <!-- title for text editor when editing an existing wine -->
     <string name="existing_wine_editor_title">Edit Wine</string>
 
+    <!-- text for menu items -->
+    <string name="action_save_wine">Save</string>
+    <string name="action_delete_wine">Delete</string>
+
     <!-- Text for editor labels -->
     <string name="name_editor_label">Wine Name</string>
     <string name="name_hint">Wine Name</string>
@@ -23,6 +27,34 @@
     <string name="colour_red">Red</string>
     <string name="colour_white">White</string>
     <string name="colour_rose">Rose</string>
+
+    <!-- Toast message for successfully editing wine and database is updated -->
+    <string name="wine_edit_successful">Wine Saved</string>
+
+    <!-- Toast message for error in editing wine and database is not updated -->
+    <string name="wine_edit_unsuccessful">Wine not saved. Please try again.</string>
+
+    <!-- Toast message for successfully deleting wine and database is updated -->
+    <string name="wine_delete_successful">Wine Deleted</string>
+
+    <!-- Toast message for error deleting wine and database is not updated -->
+    <string name="wine_delete_unsuccessful">Wine not deleted. Please try again.</string>
+
+    <!-- Message when user is leaving editor but hasn't saved changes -->
+    <string name="unsaved_changes_dialog_msg">Your changes haven\'t been saved. Are you sure you want to quit?</string>
+
+    <!-- Button text for option to discard user's changes -->
+    <string name="discard_changes">Quit</string>
+
+    <!-- Button text for the option to cancel, and return to editor-->
+    <string name="keep_editing">Keep Editing</string>
+
+    <!-- Warning message when deleting an item -->
+    <string name="delete_warning_message">Are you sure you want to delete this wine? This can\'t be undone.</string>
+
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
 
 
 </resources>

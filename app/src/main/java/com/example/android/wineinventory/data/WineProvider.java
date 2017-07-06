@@ -102,11 +102,10 @@ public class WineProvider extends ContentProvider {
             case WINE_ID:
                 return WineEntry.CONTENT_ITEM_TYPE;
             default:
-                throw new IllegalArgumentException("Uknown URI " + uri + " with match " + match);
+                throw new IllegalArgumentException("Unknown URI " + uri + " with match " + match);
         }
     }
 
-    @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         final int match = uriMatcher.match(uri);
@@ -114,7 +113,7 @@ public class WineProvider extends ContentProvider {
             case WINES:
                 return insertWine(uri, values);
             default:
-                throw new IllegalArgumentException("Insertion s not supported for " + uri);
+                throw new IllegalArgumentException("Insertion not supported for " + uri);
         }
     }
 

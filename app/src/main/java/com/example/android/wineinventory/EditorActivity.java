@@ -1,19 +1,27 @@
 package com.example.android.wineinventory;
 
 import android.app.LoaderManager;
+import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.android.wineinventory.data.WineContract.WineEntry;
 
@@ -45,14 +53,53 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * Wine colour. Valid values set in WineContract.
      */
     private int wineColour = WineEntry.COLOUR_UNKNOWN;
-    private boolean colourHasChanged = false;
+    private boolean wineHasChanged = false;
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            colourHasChanged = true;
+            wineHasChanged = true;
             return false;
         }
     };
+
+    /**
+     * create actions for clicking menu items
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // what to do depending on which button is clicked
+        switch (item.getItemId()) {
+            // Save Wine
+            case R.id.action_save_wine:
+                saveWine();
+                finish();
+                return true;
+            // delete wine
+            case R.id.action_delete_wine:
+                confirmDeletion();
+                return true;
+            // press 'back' arrow on menu
+            case android.R.id.home:
+                if (!wineHasChanged) {
+                    NavUtils.navigateUpFromSameTask(EditorActivity.this);
+                    return true;
+                }
+                DialogInterface.OnClickListener discardButtonClickListener =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // User clicked "Discard" button, close the current activity.
+                                NavUtils.navigateUpFromSameTask(EditorActivity.this);
+                            }
+                        };
+                // Show dialog that there are unsaved changes
+                showUnsavedChangesDialogue(discardButtonClickListener);
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,9 +167,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 }
             }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    wineColour = WineEntry.COLOUR_UNKNOWN;
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                wineColour = WineEntry.COLOUR_UNKNOWN;
             }
         });
     }
@@ -142,16 +189,186 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return;
         }
 
+        // Create a ContentValues object matching column names to keys and editor fields to values
+        ContentValues values = new ContentValues();
+        values.put(WineEntry.COLUMN_WINE_NAME, name);
+        values.put(WineEntry.COLUMN_WINE_GRAPE, grape);
+        values.put(WineEntry.COLUMN_WINE_COLOUR, wineColour);
+
+        // Check if editing existing wine or creating a new one
+        if (currentWineUri != null) {
+            int rowsAffected = getContentResolver().update(currentWineUri, values, null, null);
+            if (rowsAffected != 0) {
+                Toast.makeText(this, R.string.wine_edit_successful, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, R.string.wine_edit_unsuccessful, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Uri newUri = getContentResolver().insert(WineEntry.CONTENT_URI, values);
+
+        }
     }
+
+    /**
+     * Method for deleting wine
+     */
+    private void deleteWine() {
+
+        if (currentWineUri != null) {
+            int rowsDeleted = getContentResolver().delete(currentWineUri, null, null);
+            if (rowsDeleted == 0) {
+                Toast.makeText(this, (R.string.wine_delete_unsuccessful), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, (R.string.wine_delete_successful), Toast.LENGTH_SHORT).show();
+            }
+        }
+        finish();
+    }
+
+    /**
+     * Preliminary method to launch when user clicks 'delete' to give opportunity for the user to confirm.
+     * If confirmed, proceed to delete row(s) from database
+     */
+    private void confirmDeletion() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_warning_message);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            // Deletion confirmed
+            public void onClick(DialogInterface dialog, int id) {
+                deleteWine();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            // Deletion cancelled
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
+    /**
+     * method for warning user hasn't saved data before exiting editor
+     */
+    private void showUnsavedChangesDialogue(DialogInterface.OnClickListener discardButtonClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.unsaved_changes_dialog_msg);
+        builder.setPositiveButton(R.string.discard_changes, discardButtonClickListener);
+        builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Keep editing" button, so dismiss the dialog
+                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    /**
+     * warn the user if there are unsaved changes and they have pressed the back button
+     */
+    @Override
+    public void onBackPressed() {
+        if (!wineHasChanged) {
+            super.onBackPressed();
+            return;
+        }
+
+        DialogInterface.OnClickListener discardButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // User clicked "Discard" button, close the current activity.
+                        finish();
+                    }
+                };
+
+        // Show dialog that there are unsaved changes
+        showUnsavedChangesDialogue(discardButtonClickListener);
+    }
+
+    /**
+     * Inflate toolbar menu
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_editor, menu);
+        return true;
+    }
+
+    /**
+     * Hide 'delete' from menu if creating a new wine entry
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (currentWineUri == null) {
+            MenuItem delete = menu.findItem(R.id.action_delete_wine);
+            delete.setVisible(false);
+        }
+        return true;
+    }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        // projection to show table data required for editor view
+        String[] projection = {
+                WineEntry._ID,
+                WineEntry.COLUMN_WINE_NAME,
+                WineEntry.COLUMN_WINE_GRAPE,
+                WineEntry.COLUMN_WINE_COLOUR};
+        // run on background thread
+        return new CursorLoader(this, currentWineUri, projection, null, null, null);
+
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+        // move to the first row in cursor
+        if (cursor.moveToFirst()) {
+            int nameColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME);
+            int grapeColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_GRAPE);
+            int colourColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_COLOUR);
+
+            // Extract values to replace edit placeholders
+            String name = cursor.getString(nameColumnIndex);
+            String grape = cursor.getString(grapeColumnIndex);
+            int colour = cursor.getInt(colourColumnIndex);
+
+            // replace placeholders
+            nameEditText.setText(name);
+            grapeEditText.setText(grape);
+
+            // map the constant value for colour against the dropdown options, and display accordingly
+            switch (colour) {
+                case WineEntry.COLOUR_RED:
+                    colourSpinner.setSelection(1);
+                    break;
+                case WineEntry.COLOUR_WHITE:
+                    colourSpinner.setSelection(2);
+                    break;
+                case WineEntry.COLOUR_ROSE:
+                    colourSpinner.setSelection(3);
+                    break;
+                default:
+                    colourSpinner.setSelection(0);
+                    break;
+            }
+        }
     }
 
     @Override
