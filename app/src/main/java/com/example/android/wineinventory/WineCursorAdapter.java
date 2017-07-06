@@ -2,6 +2,7 @@ package com.example.android.wineinventory;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,11 @@ public class WineCursorAdapter extends CursorAdapter {
         String wineColour = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_COLOUR));
 //        String winePrice = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE));
 //        String wineQuantity = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY));
+
+        // replace grape with placeholder text if this hasn't been completed
+        if (TextUtils.isEmpty(wineGrape)) {
+            wineGrape = context.getString(R.string.unknown_grape);
+        }
 
         // Populate fields with extracted properties
         name.setText(wineName);

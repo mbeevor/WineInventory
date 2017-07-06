@@ -179,20 +179,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private void saveWine() {
 
-        String name = nameEditText.getText().toString().trim();
-        String grape = grapeEditText.getText().toString().trim();
+        String nameString = nameEditText.getText().toString().trim();
+        String grapeString = grapeEditText.getText().toString().trim();
 
         //check if values are empty and if true - return early
-        if (currentWineUri == null && TextUtils.isEmpty(name)
-                && TextUtils.isEmpty(grape)
+        if (currentWineUri == null && TextUtils.isEmpty(nameString)
+                && TextUtils.isEmpty(grapeString)
                 && wineColour == WineEntry.COLOUR_UNKNOWN) {
             return;
         }
 
         // Create a ContentValues object matching column names to keys and editor fields to values
         ContentValues values = new ContentValues();
-        values.put(WineEntry.COLUMN_WINE_NAME, name);
-        values.put(WineEntry.COLUMN_WINE_GRAPE, grape);
+        values.put(WineEntry.COLUMN_WINE_NAME, nameString);
+        values.put(WineEntry.COLUMN_WINE_GRAPE, grapeString);
         values.put(WineEntry.COLUMN_WINE_COLOUR, wineColour);
 
         // Check if editing existing wine or creating a new one
@@ -205,6 +205,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         } else {
             Uri newUri = getContentResolver().insert(WineEntry.CONTENT_URI, values);
+
+            if (newUri != null) {
+                Toast.makeText(this, R.string.wine_edit_successful, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, R.string.wine_edit_unsuccessful, Toast.LENGTH_SHORT).show();
+            }
 
         }
     }

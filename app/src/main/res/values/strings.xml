@@ -22,6 +22,9 @@
     <string name="grape_hint">Grape Name(s)</string>
     <string name="wine_colour_label">Wine Colour</string>
 
+    <!-- unknown grape placebolder text -->
+    <string name="unknown_grape">Grape Unknown</string>
+
     <!-- Text for spinner options -->
     <string name="colour_unknown">Unknown</string>
     <string name="colour_red">Red</string>

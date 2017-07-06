@@ -35,9 +35,8 @@ public class WineDatabaseHelper extends SQLiteOpenHelper{
         String SQL_CREATE_TABLE = "CREATE TABLE " + WineEntry.TABLE_NAME + " ("
                 + WineEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + WineEntry.COLUMN_WINE_NAME + " TEXT NOT NULL, "
-                + WineEntry.COLUMN_WINE_GRAPE + " TEXT NOT NULL, "
-                + WineEntry.COLUMN_WINE_COLOUR + " INTEGER NOT NULL, "
-                + WineEntry.COLUMN_WINE_PRICE + " INTEGER NOT NULL DEFAULT 0);";
+                + WineEntry.COLUMN_WINE_GRAPE + " TEXT, "
+                + WineEntry.COLUMN_WINE_COLOUR + " INTEGER NOT NULL);";
 
         // Execute
         database.execSQL(SQL_CREATE_TABLE);

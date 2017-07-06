@@ -7,7 +7,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 
 import com.example.android.wineinventory.data.WineContract.WineEntry;
 
@@ -34,7 +33,7 @@ public class WineProvider extends ContentProvider {
      */
     static {
         uriMatcher.addURI(WineContract.CONTENT_AUTHORITY, WineContract.PATH_WINES, WINES);
-        uriMatcher.addURI(WineContract.CONTENT_AUTHORITY, WineContract.PATH_WINES + "#", WINE_ID);
+        uriMatcher.addURI(WineContract.CONTENT_AUTHORITY, WineContract.PATH_WINES + "/#", WINE_ID);
     }
 
     private WineDatabaseHelper wineDatabaseHelper;
@@ -58,7 +57,6 @@ public class WineProvider extends ContentProvider {
      * @param sortOrder
      */
 
-    @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
@@ -84,7 +82,7 @@ public class WineProvider extends ContentProvider {
         }
 
         /**
-         * set notifcation URI on the cursor so that the cursor will update if the data changes
+         * set notification URI on the cursor so that the cursor will update if the data changes
          */
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
@@ -127,12 +125,6 @@ public class WineProvider extends ContentProvider {
         String name = values.getAsString(WineEntry.COLUMN_WINE_NAME);
         if (name == null || name.length() == 0) {
             throw new IllegalArgumentException("Wine name required");
-        }
-
-        // Sanity check that the wine grape has been entered
-        String grape = values.getAsString(WineEntry.COLUMN_WINE_GRAPE);
-        if (grape == null || grape.length() == 0) {
-            throw new IllegalArgumentException("Grape required");
         }
 
         // Sanity check that wine colour has been set, or set to unknown
@@ -227,13 +219,6 @@ public class WineProvider extends ContentProvider {
             String name = values.getAsString(WineEntry.COLUMN_WINE_NAME);
             if (name == null || name.length() == 0) {
                 throw new IllegalArgumentException("Wine name required");
-            }
-        }
-
-        if (values.containsKey(WineEntry.COLUMN_WINE_GRAPE)) {
-            String grape = values.getAsString(WineEntry.COLUMN_WINE_GRAPE);
-            if (grape == null || grape.length() == 0) {
-                throw new IllegalArgumentException("Grape required");
             }
         }
 
