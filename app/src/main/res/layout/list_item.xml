@@ -8,20 +8,17 @@
 
     <TextView
         android:id="@+id/text_wine_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/list_item_heading"
         tools:text="Wine Name" />
 
     <TextView
         android:id="@+id/text_wine_grape"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/list_item_text"
         tools:text="Merlot" />
 
     <TextView
         android:id="@+id/text_wine_colour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/list_item_text"
         tools:text="Red" />
 
 </LinearLayout>

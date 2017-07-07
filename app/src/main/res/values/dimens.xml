@@ -4,4 +4,12 @@
     <!-- generic margin -->
     <dimen name="app_margin">16dp</dimen>
 
+    <!-- generic padding -->
+    <dimen name="app_padding">16dp</dimen>
+
+    <!-- narrow padding -->
+    <dimen name="narrow_app_padding_horizontal">16dp</dimen>
+    <dimen name="narrow_app_padding_vertical">8dp</dimen>
+
+
 </resources>
