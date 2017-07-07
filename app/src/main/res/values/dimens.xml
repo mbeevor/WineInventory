@@ -11,5 +11,10 @@
     <dimen name="narrow_app_padding_horizontal">16dp</dimen>
     <dimen name="narrow_app_padding_vertical">8dp</dimen>
 
+    <!-- padding for small buttons -->
+    <dimen name="small_button_padding">8dp</dimen>
+
+    <!-- margin for small buttons -->
+    <dimen name="small_button_margin">8dp</dimen>
 
 </resources>

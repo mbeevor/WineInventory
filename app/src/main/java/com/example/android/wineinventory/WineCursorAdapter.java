@@ -45,7 +45,6 @@ public class WineCursorAdapter extends CursorAdapter {
         TextView grape = (TextView) view.findViewById(R.id.text_wine_grape);
         TextView colour = (TextView) view.findViewById(R.id.text_wine_colour);
 //        TextView price = (TextView) view.findViewById(R.id.text_wine_price);
-//        TextView quantity = (TextView) view.findViewById(R.id.text_wine_quantity);
 
         // Extract information from cursor
         String wineName = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME));

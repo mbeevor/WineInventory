@@ -70,6 +70,10 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
         getLoaderManager().initLoader(WINE_LOADER, null, this);
     }
 
+    /**
+     * Method to calculate and display quantity
+     */
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 // projection to show table data required for Inventory view

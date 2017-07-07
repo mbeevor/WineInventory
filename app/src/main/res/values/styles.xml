@@ -23,18 +23,80 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
-    <!-- style for labels in wine editor -->
+    <!-- style for main labels in wine editor -->
     <style name="textLabelAppearance">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">@dimen/app_padding</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <!-- style for quantity label in wine editor -->
+    <style name="quantityLabelAppearance">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/app_padding</item>
+        <item name="android:paddingBottom">@dimen/app_padding</item>
+        <item name="android:paddingTop">@dimen/app_padding</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+    <!-- style for quantity text in wine editor -->
+    <style name="quantityTextAppearance">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">@dimen/small_button_padding</item>
+        <item name="android:layout_margin">@dimen/small_button_margin</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+    <!-- style for spinner label in wine editor -->
+    <style name="spinnerLabelAppearance">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:padding">@dimen/app_padding</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+    <!-- style for order button in wine editor -->
+    <style name="orderButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">@dimen/app_padding</item>
+        <item name="android:layout_margin">@dimen/app_margin</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorIcons</item>
+        <item name="android:background">@color/colorPrimaryLight</item>
+    </style>
+
+    <!-- style for quantity change buttons -->
+    <style name="quantityChangeButton">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:padding">@dimen/small_button_padding</item>
+        <item name="android:layout_margin">@dimen/small_button_margin</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorIcons</item>
+        <item name="android:background">@color/colorPrimaryLight</item>
     </style>
 
     <!-- style for text fields in wine editor -->
     <style name="textEditorAppearance">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">@dimen/app_padding</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+    <!-- style for spinner dropdown in wine editor -->
+    <style name="spinnerDropdownAppearance">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">2</item>

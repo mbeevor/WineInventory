@@ -16,11 +16,15 @@
     <string name="action_delete_wine">Delete</string>
 
     <!-- Text for editor labels -->
-    <string name="name_editor_label">Wine Name</string>
+    <string name="description_editor_label">Wine Details</string>
     <string name="name_hint">Wine Name</string>
-    <string name="grape_editor_label">Grape Name(s)</string>
     <string name="grape_hint">Grape Name(s)</string>
     <string name="wine_colour_label">Wine Colour</string>
+    <string name="quantity_editor_label">Stock Details</string>
+    <string name="quantity_label">Quantity Available</string>
+
+    <!-- Button text -->
+    <string name="order_button">Order More</string>
 
     <!-- unknown grape placebolder text -->
     <string name="unknown_grape">Grape Unknown</string>

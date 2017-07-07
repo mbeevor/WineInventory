@@ -70,6 +70,12 @@ public final class WineContract {
         public static final String COLUMN_WINE_COLOUR = "colour";
 
         /**
+         * Quantity remaining (Type: INTEGER)
+         */
+        public static final String COLUMN_WINE_QUANTITY = "quantity";
+
+
+        /**
          * Returns whether or not the wine colour is unknown, red, white or rose.
          */
         public static boolean isValidColour(int colour) {
@@ -80,10 +86,6 @@ public final class WineContract {
             return false;
         }
 
-        /**
-         * Quantity remaining (Type: INTEGER)
-         */
-        public static final String COLUMN_WINE_QUANTITY = "quantity";
 
         /**
          * Possible values for wine colour

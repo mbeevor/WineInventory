@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private EditText nameEditText;
     private EditText grapeEditText;
+    private EditText quantityEditText;
 
     /**
      * Spinner to pick grape colour
@@ -50,9 +52,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private Spinner colourSpinner;
 
     /**
+     * Wine quantity
+     */
+    private int wineQuantity;
+
+    /**
+     * Quantity control buttons
+     */
+    private Button increaseQuantity;
+    private Button decreaseQuantity;
+
+    /**
      * Wine colour. Valid values set in WineContract.
      */
     private int wineColour = WineEntry.COLOUR_UNKNOWN;
+
     private boolean wineHasChanged = false;
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
@@ -120,28 +134,51 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             getLoaderManager().initLoader(EXISTING_WINE_LOADER, null, this);
         }
 
-        /**
-         * Find views to edit
-         */
+        //Find views to edit or read input from
         nameEditText = (EditText) findViewById(R.id.edit_wine_name);
         grapeEditText = (EditText) findViewById(R.id.edit_wine_grape);
         colourSpinner = (Spinner) findViewById(R.id.spinner_wine_colour);
+        quantityEditText = (EditText) findViewById(R.id.edit_wine_quantity);
+        increaseQuantity = (Button) findViewById(R.id.increas_quantity_button);
+        decreaseQuantity = (Button) findViewById(R.id.decrease_quantity_button);
 
-        /**
-         * set on touch listeners to prevent accidental data loss
-         */
+        //set on touch listeners to prevent accidental data loss
         nameEditText.setOnTouchListener(onTouchListener);
         grapeEditText.setOnTouchListener(onTouchListener);
         colourSpinner.setOnTouchListener(onTouchListener);
+        quantityEditText.setOnTouchListener(onTouchListener);
 
         setupSpinnner();
+
+        //on Click listeners for increasing or decreasing quantity
+        increaseQuantity.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+                    public void onClick(View view) {
+                wineQuantity += 1;
+                quantityEditText.setText(Integer.toString(wineQuantity));
+            }
+
+        });
+
+        decreaseQuantity.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                wineQuantity -= 1;
+                if (wineQuantity < 0 ) {
+                    wineQuantity = 0;
+                }
+                quantityEditText.setText(Integer.toString(wineQuantity));
+            }
+
+        });
     }
+
 
     /**
      * Set up spinner that allows user to pick the wine colour; default set to unknown
      */
-
-
     private void setupSpinnner() {
 
         ArrayAdapter colourSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.array_wine_colour, android.R.layout.simple_spinner_item);
@@ -182,6 +219,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String nameString = nameEditText.getText().toString().trim();
         String grapeString = grapeEditText.getText().toString().trim();
 
+
         //check if values are empty and if true - return early
         if (currentWineUri == null && TextUtils.isEmpty(nameString)
                 && TextUtils.isEmpty(grapeString)
@@ -193,6 +231,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         ContentValues values = new ContentValues();
         values.put(WineEntry.COLUMN_WINE_NAME, nameString);
         values.put(WineEntry.COLUMN_WINE_GRAPE, grapeString);
+        values.put(WineEntry.COLUMN_WINE_QUANTITY, wineQuantity);
         values.put(WineEntry.COLUMN_WINE_COLOUR, wineColour);
 
         // Check if editing existing wine or creating a new one
@@ -335,6 +374,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 WineEntry._ID,
                 WineEntry.COLUMN_WINE_NAME,
                 WineEntry.COLUMN_WINE_GRAPE,
+                WineEntry.COLUMN_WINE_QUANTITY,
                 WineEntry.COLUMN_WINE_COLOUR};
         // run on background thread
         return new CursorLoader(this, currentWineUri, projection, null, null, null);
@@ -349,6 +389,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int nameColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME);
             int grapeColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_GRAPE);
             int colourColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_COLOUR);
+            int quantityColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY);
 
             // Extract values to replace edit placeholders
             String name = cursor.getString(nameColumnIndex);
@@ -358,6 +399,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // replace placeholders
             nameEditText.setText(name);
             grapeEditText.setText(grape);
+
+            wineQuantity = cursor.getInt(quantityColumnIndex);
 
             // map the constant value for colour against the dropdown options, and display accordingly
             switch (colour) {

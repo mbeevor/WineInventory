@@ -10,7 +10,7 @@ import com.example.android.wineinventory.data.WineContract.WineEntry;
  * Database helper for Wine app. Manages database creation and version control.
  */
 
-public class WineDatabaseHelper extends SQLiteOpenHelper{
+public class WineDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Name of the database file
@@ -36,7 +36,8 @@ public class WineDatabaseHelper extends SQLiteOpenHelper{
                 + WineEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + WineEntry.COLUMN_WINE_NAME + " TEXT NOT NULL, "
                 + WineEntry.COLUMN_WINE_GRAPE + " TEXT, "
-                + WineEntry.COLUMN_WINE_COLOUR + " INTEGER NOT NULL);";
+                + WineEntry.COLUMN_WINE_COLOUR + " INTEGER NOT NULL, "
+                + WineEntry.COLUMN_WINE_QUANTITY + " TEXT);";
 
         // Execute
         database.execSQL(SQL_CREATE_TABLE);

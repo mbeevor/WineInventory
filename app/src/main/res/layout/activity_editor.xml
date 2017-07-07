@@ -1,49 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="@dimen/app_padding"
-    tools:context=".EditorActivity" >
+    tools:context=".EditorActivity">
 
-    <!-- Wine Name -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <!-- Name Label -->
-        <TextView
-            style="@style/textLabelAppearance"
-            android:text="@string/name_editor_label"/>
+    <!-- Description Label -->
+    <TextView
+        style="@style/textLabelAppearance"
+        android:text="@string/description_editor_label" />
 
-        <!-- Name Input -->
-        <EditText
-            android:id="@+id/edit_wine_name"
-            style="@style/textEditorAppearance"
-            android:hint="@string/name_hint"/>
+    <!-- Name Input -->
+    <EditText
+        android:id="@+id/edit_wine_name"
+        style="@style/textEditorAppearance"
+        android:hint="@string/name_hint" />
 
-    </LinearLayout>
+    <!-- Grape Input -->
+    <EditText
+        android:id="@+id/edit_wine_grape"
+        style="@style/textEditorAppearance"
+        android:hint="@string/grape_hint" />
 
-    <!-- Wine Grape -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <!-- Grape Label -->
-        <TextView
-            style="@style/textLabelAppearance"
-            android:text="@string/grape_editor_label"/>
-
-        <!-- Grape Input -->
-        <EditText
-            android:id="@+id/edit_wine_grape"
-            style="@style/textEditorAppearance"
-            android:hint="@string/grape_hint"/>
-
-    </LinearLayout>
 
     <!-- Wine Colour -->
     <LinearLayout
@@ -53,17 +34,74 @@
 
         <!-- Grape Label -->
         <TextView
-            style="@style/textLabelAppearance"
-            android:text="@string/wine_colour_label"/>
+            style="@style/spinnerLabelAppearance"
+            android:text="@string/wine_colour_label" />
 
         <!-- Grape Input -->
         <Spinner
             android:id="@+id/spinner_wine_colour"
-            style="@style/textEditorAppearance"
+            style="@style/spinnerDropdownAppearance"
             android:hint="@string/grape_hint"
-            android:spinnerMode="dropdown"/>
+            android:spinnerMode="dropdown" />
 
     </LinearLayout>
+
+    <!-- Stock Details -->
+    <TextView
+        style="@style/textLabelAppearance"
+        android:text="@string/quantity_editor_label" />
+
+    <!-- Quantity view -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Quantity label -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/quantityLabelAppearance"
+                android:text="@string/quantity_label" />
+
+        </LinearLayout>
+
+        <!-- Quantity buttons -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/decrease_quantity_button"
+                style="@style/quantityChangeButton"
+                android:text="-" />
+
+            <EditText
+                android:id="@+id/edit_wine_quantity"
+                style="@style/quantityTextAppearance"
+                android:inputType="number"
+                tools:text="1" />
+
+            <Button
+                android:id="@+id/increas_quantity_button"
+                style="@style/quantityChangeButton"
+                android:text="+" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!-- Order Button -->
+    <Button
+        style="@style/orderButton"
+        android:text="@string/order_button" />
 
 
 </LinearLayout>
