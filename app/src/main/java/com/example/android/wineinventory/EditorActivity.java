@@ -395,12 +395,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String name = cursor.getString(nameColumnIndex);
             String grape = cursor.getString(grapeColumnIndex);
             int colour = cursor.getInt(colourColumnIndex);
+            wineQuantity = cursor.getInt(quantityColumnIndex);
 
             // replace placeholders
             nameEditText.setText(name);
             grapeEditText.setText(grape);
+            quantityEditText.setText(Integer.toString(wineQuantity));
 
-            wineQuantity = cursor.getInt(quantityColumnIndex);
 
             // map the constant value for colour against the dropdown options, and display accordingly
             switch (colour) {

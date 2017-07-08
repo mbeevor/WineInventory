@@ -13,8 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import com.example.android.wineinventory.data.WineContract.WineEntry;
 
+import com.example.android.wineinventory.data.WineContract.WineEntry;
 
 
 public class InventoryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -81,9 +81,11 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
                 WineEntry._ID,
                 WineEntry.COLUMN_WINE_NAME,
                 WineEntry.COLUMN_WINE_GRAPE,
-                WineEntry.COLUMN_WINE_COLOUR};
+                WineEntry.COLUMN_WINE_COLOUR,
+                WineEntry.COLUMN_WINE_QUANTITY};
         // run on background thread
-        return new CursorLoader(this, WineEntry.CONTENT_URI, projection, null, null, null);    }
+        return new CursorLoader(this, WineEntry.CONTENT_URI, projection, null, null, null);
+    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {

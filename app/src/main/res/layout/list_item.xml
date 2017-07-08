@@ -21,4 +21,9 @@
         style="@style/list_item_text"
         tools:text="Red" />
 
+    <TextView
+        android:id="@+id/text_wine_quantity"
+        style="@style/list_item_text"
+        tools:text="1" />
+
 </LinearLayout>

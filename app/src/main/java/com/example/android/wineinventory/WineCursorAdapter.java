@@ -10,6 +10,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.example.android.wineinventory.data.WineContract.WineEntry;
+
 /**
  * The WineCursorAdapter is an adapter for a ListView that uses a Cursor of wine data.
  * This adapter knows how to create list items for each row of wine data in the Cursor.
@@ -33,9 +34,9 @@ public class WineCursorAdapter extends CursorAdapter {
 
     /**
      * Now bind the wine data from the current row pointed at by the cursor to the listView above.
-     * @param view Existing view, returned from newView above
-     * @param cursor The Cursor from which to get the data, which is already pointing to the correct row
      *
+     * @param view   Existing view, returned from newView above
+     * @param cursor The Cursor from which to get the data, which is already pointing to the correct row
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
@@ -44,14 +45,15 @@ public class WineCursorAdapter extends CursorAdapter {
         TextView name = (TextView) view.findViewById(R.id.text_wine_name);
         TextView grape = (TextView) view.findViewById(R.id.text_wine_grape);
         TextView colour = (TextView) view.findViewById(R.id.text_wine_colour);
-//        TextView price = (TextView) view.findViewById(R.id.text_wine_price);
+        TextView quantity = (TextView) view.findViewById(R.id.text_wine_quantity);
 
         // Extract information from cursor
         String wineName = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME));
         String wineGrape = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_GRAPE));
         String wineColour = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_COLOUR));
+        String wineQuantity = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY));
+
 //        String winePrice = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE));
-//        String wineQuantity = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY));
 
         // replace grape with placeholder text if this hasn't been completed
         if (TextUtils.isEmpty(wineGrape)) {
@@ -62,8 +64,9 @@ public class WineCursorAdapter extends CursorAdapter {
         name.setText(wineName);
         grape.setText(wineGrape);
         colour.setText(wineColour);
+        quantity.setText(wineQuantity);
+
 //        price.setText(winePrice);
-//        quantity.setText(wineQuantity);
     }
 
 }
