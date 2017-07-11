@@ -8,4 +8,11 @@
     <color name="colorSecondaryText">#757575</color>
     <color name="colorIcons">#FFFFFF</color>
     <color name="colorDivider">#BDBDBD</color>
+
+    <!-- colours for wine indicator drawable -->
+    <color name="redWine">#ba1414</color>
+    <color name="whiteWine">#f2f6a9</color>
+    <color name="roseWine">#ecc5ea</color>
+
+
 </resources>

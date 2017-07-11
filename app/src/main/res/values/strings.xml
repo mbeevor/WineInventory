@@ -22,6 +22,7 @@
     <string name="wine_colour_label">Wine Colour</string>
     <string name="quantity_editor_label">Stock Details</string>
     <string name="quantity_label">Quantity Available</string>
+    <string name="currency_label">£</string>
 
     <!-- Button text -->
     <string name="order_button">Order More</string>
@@ -62,6 +63,12 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
 
+    <!-- Display text for 'in stock' -->
+    <string name="in_stock_text">750ml bottles in stock</string>
+
+    <!-- Toast messages for wine sale -->
+    <string name="wine_sale_successful">Bottle sold</string>
+    <string name="wine_sale_unsuccessful">No more bottles to sell!</string>
 
 
 </resources>

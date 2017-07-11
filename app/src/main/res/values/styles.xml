@@ -57,7 +57,7 @@
     <!-- style for spinner label in wine editor -->
     <style name="spinnerLabelAppearance">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">@dimen/no_padding</item>
         <item name="android:layout_weight">1</item>
         <item name="android:padding">@dimen/app_padding</item>
         <item name="android:textSize">14sp</item>
@@ -77,8 +77,8 @@
 
     <!-- style for quantity change buttons -->
     <style name="quantityChangeButton">
-        <item name="android:layout_height">48dp</item>
-        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_width">@dimen/button_width</item>
         <item name="android:padding">@dimen/small_button_padding</item>
         <item name="android:layout_margin">@dimen/small_button_margin</item>
         <item name="android:textSize">14sp</item>
@@ -95,10 +95,17 @@
         <item name="android:textColor">@color/colorPrimaryText</item>
     </style>
 
+    <!-- style for drawable image for wine colour -->
+    <style name="drawableWineColour">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/colorDivider</item>
+    </style>
+
     <!-- style for spinner dropdown in wine editor -->
     <style name="spinnerDropdownAppearance">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">@dimen/no_padding</item>
         <item name="android:layout_weight">2</item>
         <item name="android:padding">@dimen/app_padding</item>
         <item name="android:textSize">14sp</item>
@@ -106,22 +113,65 @@
     </style>
 
     <!-- style for inventory view list item heading -->
-    <style name="list_item_heading">
+    <style name="listItemHeading">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:padding">@dimen/app_padding</item>
+        <item name="android:paddingTop">@dimen/app_padding</item>
+        <item name="android:paddingBottom">@dimen/extra_narrow_app_padding_vertical</item>
+        <item name="android:paddingLeft">@dimen/app_padding</item>
+        <item name="android:paddingRight">@dimen/app_padding</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <!-- style for inventory view list item text -->
-    <style name="list_item_text">
+    <!-- style for inventory view grape text -->
+    <style name="listItemGrapeText">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingLeft">@dimen/app_padding</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:paddingRight">@dimen/app_padding</item>
+        <item name="android:paddingBottom">@dimen/extra_narrow_app_padding_vertical</item>
+        <item name="android:paddingTop">@dimen/extra_narrow_app_padding_vertical</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorSecondaryText</item>
+    </style>
+
+    <!-- style for currency layout -->
+    <style name="currency">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingTop">@dimen/app_padding</item>
+        <item name="android:paddingBottom">@dimen/app_padding</item>
+        <item name="android:paddingLeft">@dimen/narrow_app_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/no_padding</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <!-- style for quantity view list item text -->
+    <style name="textWineQuantity">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingTop">@dimen/narrow_app_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/app_padding</item>
+        <item name="android:paddingLeft">@dimen/narrow_app_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/narrow_app_padding_horizontal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <!-- style for 'in stock' list item text -->
+    <style name="textWineInStock">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingTop">@dimen/extra_narrow_app_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/app_padding</item>
+        <item name="android:paddingLeft">@dimen/no_padding</item>
+        <item name="android:paddingRight">@dimen/narrow_app_padding_horizontal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
 </resources>

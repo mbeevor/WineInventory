@@ -25,6 +25,12 @@
         style="@style/textEditorAppearance"
         android:hint="@string/grape_hint" />
 
+    <!-- Price Input -->
+    <EditText
+        android:inputType="numberDecimal"
+        android:id="@+id/edit_wine_price"
+        style="@style/textEditorAppearance"
+        android:hint="@string/currency_label" />
 
     <!-- Wine Colour -->
     <LinearLayout

@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private EditText nameEditText;
     private EditText grapeEditText;
+    private EditText priceEditText;
     private EditText quantityEditText;
 
     /**
@@ -54,7 +56,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     /**
      * Wine quantity
      */
-    private int wineQuantity;
+    public int wineQuantity;
 
     /**
      * Quantity control buttons
@@ -137,6 +139,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         //Find views to edit or read input from
         nameEditText = (EditText) findViewById(R.id.edit_wine_name);
         grapeEditText = (EditText) findViewById(R.id.edit_wine_grape);
+        priceEditText = (EditText) findViewById(R.id.edit_wine_price);
         colourSpinner = (Spinner) findViewById(R.id.spinner_wine_colour);
         quantityEditText = (EditText) findViewById(R.id.edit_wine_quantity);
         increaseQuantity = (Button) findViewById(R.id.increas_quantity_button);
@@ -145,34 +148,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         //set on touch listeners to prevent accidental data loss
         nameEditText.setOnTouchListener(onTouchListener);
         grapeEditText.setOnTouchListener(onTouchListener);
+        priceEditText.setOnTouchListener(onTouchListener);
         colourSpinner.setOnTouchListener(onTouchListener);
         quantityEditText.setOnTouchListener(onTouchListener);
 
         setupSpinnner();
-
-        //on Click listeners for increasing or decreasing quantity
-        increaseQuantity.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-                    public void onClick(View view) {
-                wineQuantity += 1;
-                quantityEditText.setText(Integer.toString(wineQuantity));
-            }
-
-        });
-
-        decreaseQuantity.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                wineQuantity -= 1;
-                if (wineQuantity < 0 ) {
-                    wineQuantity = 0;
-                }
-                quantityEditText.setText(Integer.toString(wineQuantity));
-            }
-
-        });
     }
 
 
@@ -218,6 +198,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         String nameString = nameEditText.getText().toString().trim();
         String grapeString = grapeEditText.getText().toString().trim();
+        String priceString = priceEditText.getText().toString().trim();
+        String quantityString = quantityEditText.getText().toString();
 
 
         //check if values are empty and if true - return early
@@ -231,7 +213,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         ContentValues values = new ContentValues();
         values.put(WineEntry.COLUMN_WINE_NAME, nameString);
         values.put(WineEntry.COLUMN_WINE_GRAPE, grapeString);
-        values.put(WineEntry.COLUMN_WINE_QUANTITY, wineQuantity);
+        values.put(WineEntry.COLUMN_WINE_PRICE, priceString);
+        values.put(WineEntry.COLUMN_WINE_QUANTITY, quantityString);
         values.put(WineEntry.COLUMN_WINE_COLOUR, wineColour);
 
         // Check if editing existing wine or creating a new one
@@ -374,6 +357,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 WineEntry._ID,
                 WineEntry.COLUMN_WINE_NAME,
                 WineEntry.COLUMN_WINE_GRAPE,
+                WineEntry.COLUMN_WINE_PRICE,
                 WineEntry.COLUMN_WINE_QUANTITY,
                 WineEntry.COLUMN_WINE_COLOUR};
         // run on background thread
@@ -388,18 +372,45 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (cursor.moveToFirst()) {
             int nameColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME);
             int grapeColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_GRAPE);
+            int priceColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE);
             int colourColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_COLOUR);
             int quantityColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY);
 
             // Extract values to replace edit placeholders
             String name = cursor.getString(nameColumnIndex);
             String grape = cursor.getString(grapeColumnIndex);
+            String price = cursor.getString(priceColumnIndex);
             int colour = cursor.getInt(colourColumnIndex);
             wineQuantity = cursor.getInt(quantityColumnIndex);
+
+            //on Click listeners for increasing or decreasing quantity
+            increaseQuantity.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    wineQuantity += 1;
+                    quantityEditText.setText(Integer.toString(wineQuantity));
+                }
+
+            });
+
+            decreaseQuantity.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    wineQuantity -= 1;
+                    if (wineQuantity < 0 ) {
+                        wineQuantity = 0;
+                    }
+                    quantityEditText.setText(Integer.toString(wineQuantity));
+                }
+
+            });
 
             // replace placeholders
             nameEditText.setText(name);
             grapeEditText.setText(grape);
+            priceEditText.setText(price);
             quantityEditText.setText(Integer.toString(wineQuantity));
 
 

@@ -12,6 +12,7 @@ import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.android.wineinventory.data.WineContract.WineEntry;
@@ -21,7 +22,9 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
 
     private static final int WINE_LOADER = 0;
 
-    // adapter to display the list of wines
+    /**
+     * adapter to display the list of wines
+    */
     WineCursorAdapter wineAdapter;
 
     @Override
@@ -81,6 +84,7 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
                 WineEntry._ID,
                 WineEntry.COLUMN_WINE_NAME,
                 WineEntry.COLUMN_WINE_GRAPE,
+                WineEntry.COLUMN_WINE_PRICE,
                 WineEntry.COLUMN_WINE_COLOUR,
                 WineEntry.COLUMN_WINE_QUANTITY};
         // run on background thread

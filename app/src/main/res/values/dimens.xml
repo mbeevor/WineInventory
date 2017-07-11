@@ -11,10 +11,23 @@
     <dimen name="narrow_app_padding_horizontal">16dp</dimen>
     <dimen name="narrow_app_padding_vertical">8dp</dimen>
 
+    <!-- extra-narrow padding -->
+    <dimen name="extra_narrow_app_padding_vertical">2dp</dimen>
+
     <!-- padding for small buttons -->
     <dimen name="small_button_padding">8dp</dimen>
 
     <!-- margin for small buttons -->
     <dimen name="small_button_margin">8dp</dimen>
+
+    <!-- height and width for buttons -->
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_width">48dp</dimen>
+
+    <!-- dimensions for drawable wine colour icon -->
+    <dimen name="drawable_wine_colour">48dp</dimen>
+
+    <!-- no padding -->
+    <dimen name="no_padding">0dp</dimen>
 
 </resources>
