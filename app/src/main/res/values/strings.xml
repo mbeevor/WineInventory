@@ -40,7 +40,7 @@
     <string name="wine_edit_successful">Wine Saved</string>
 
     <!-- Toast message for error in editing wine and database is not updated -->
-    <string name="wine_edit_unsuccessful">Wine not saved. Please try again.</string>
+    <string name="wine_edit_unsuccessful">Wine not saved. Please ensure you enter all required details.</string>
 
     <!-- Toast message for successfully deleting wine and database is updated -->
     <string name="wine_delete_successful">Wine Deleted</string>
@@ -69,6 +69,10 @@
     <!-- Toast messages for wine sale -->
     <string name="wine_sale_successful">Bottle sold</string>
     <string name="wine_sale_unsuccessful">No more bottles to sell!</string>
+
+    <!-- text for contacting supplier -->
+    <string name="stock_low">stock running low. Please deliver additional crates.</string>
+    <string name="quantity_remaining">Number of bottles remaining:</string>
 
 
 </resources>

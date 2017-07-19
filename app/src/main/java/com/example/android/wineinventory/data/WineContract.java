@@ -60,6 +60,11 @@ public final class WineContract {
         public static final String COLUMN_WINE_GRAPE = "grape";
 
         /**
+         * Body of each wine (Type: BLOB)
+         */
+        public static final String COLUMN_WINE_IMAGE = "image";
+
+        /**
          * Price of the wine (Type: INTEGER)
          */
         public static final String COLUMN_WINE_PRICE = "price";

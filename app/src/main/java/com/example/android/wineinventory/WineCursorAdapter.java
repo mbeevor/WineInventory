@@ -4,7 +4,6 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -63,7 +62,7 @@ public class WineCursorAdapter extends CursorAdapter {
         final String wineName = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME));
         String wineGrape = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_GRAPE));
         String winePrice = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE));
-        String wineQuantity = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY));
+        final String wineQuantity = cursor.getString(cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY));
         final long id = cursor.getLong(cursor.getColumnIndex(WineEntry._ID));
 
         // shopping basket listener; automatically decreases quantity available by one
@@ -71,6 +70,7 @@ public class WineCursorAdapter extends CursorAdapter {
 
             @Override
             public void onClick(View view) {
+
                 int wineQuantity = parseInt(quantity.getText().toString());
                 wineQuantity -= 1;
 

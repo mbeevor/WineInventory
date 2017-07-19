@@ -7,12 +7,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -27,6 +32,14 @@ import android.widget.Toast;
 
 import com.example.android.wineinventory.data.WineContract.WineEntry;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static android.R.attr.data;
+
 /**
  * Created by Matthew on 06/07/2017.
  */
@@ -34,6 +47,16 @@ import com.example.android.wineinventory.data.WineContract.WineEntry;
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int EXISTING_WINE_LOADER = 0;
+
+    /**
+     * integer for capturing photo of wine
+     */
+    static final int WINE_IMAGE = 1;
+
+    /**
+     * Path for saving photo on device
+     */
+    String currentPhotoPath;
 
     /**
      * Content URI for the existing wine, 'null' if it is a new wine
@@ -47,6 +70,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText grapeEditText;
     private EditText priceEditText;
     private EditText quantityEditText;
+
+    /**
+     * Image view for captured image
+     */
+    private ImageView wineImageView;
 
     /**
      * Spinner to pick grape colour
@@ -63,6 +91,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     private Button increaseQuantity;
     private Button decreaseQuantity;
+
+    /**
+     * Order more button
+     */
+    private Button orderMore;
 
     /**
      * Wine colour. Valid values set in WineContract.
@@ -140,25 +173,124 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         nameEditText = (EditText) findViewById(R.id.edit_wine_name);
         grapeEditText = (EditText) findViewById(R.id.edit_wine_grape);
         priceEditText = (EditText) findViewById(R.id.edit_wine_price);
+        wineImageView = (ImageView) findViewById(R.id.wine_image_view);
         colourSpinner = (Spinner) findViewById(R.id.spinner_wine_colour);
         quantityEditText = (EditText) findViewById(R.id.edit_wine_quantity);
         increaseQuantity = (Button) findViewById(R.id.increas_quantity_button);
         decreaseQuantity = (Button) findViewById(R.id.decrease_quantity_button);
+        orderMore = (Button) findViewById(R.id.order_more_button);
+
+        // set image prewiew to add_photo image
+        wineImageView.setImageResource(R.drawable.add_photo);
 
         //set on touch listeners to prevent accidental data loss
         nameEditText.setOnTouchListener(onTouchListener);
         grapeEditText.setOnTouchListener(onTouchListener);
         priceEditText.setOnTouchListener(onTouchListener);
+        wineImageView.setOnTouchListener(onTouchListener);
         colourSpinner.setOnTouchListener(onTouchListener);
         quantityEditText.setOnTouchListener(onTouchListener);
 
         setupSpinnner();
+
+        //on Click listeners for increasing or decreasing quantity
+        increaseQuantity.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                if (quantityEditText == null) {
+                    quantityEditText.setText(0);
+                }
+
+                wineQuantity += 1;
+                quantityEditText.setText(Integer.toString(wineQuantity));
+            }
+
+        });
+
+        decreaseQuantity.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                if (quantityEditText == null) {
+                    quantityEditText.setText(0);
+                }
+
+                wineQuantity -= 1;
+                if (wineQuantity < 0) {
+                    wineQuantity = 0;
+                }
+                quantityEditText.setText(Integer.toString(wineQuantity));
+            }
+
+        });
+
+        //on Click listener for order more button
+        orderMore.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                String nameString = nameEditText.getText().toString().trim();
+                String quantityString = quantityEditText.getText().toString();
+
+                Intent contactSupplier = new Intent(Intent.ACTION_SENDTO);
+                contactSupplier.setData(Uri.parse("mailto:"));
+                contactSupplier.putExtra(Intent.EXTRA_SUBJECT, nameString);
+                contactSupplier.putExtra(Intent.EXTRA_TEXT, nameString + " " + getString(R.string.stock_low) + "\n" +
+                        getString(R.string.quantity_remaining) + " " + quantityString);
+                startActivity(contactSupplier);
+            }
+
+        });
+
+
+        /**
+         * on click listener for launching method to capture image
+         */
+        wineImageView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // check there is a camera available
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        // create new image file
+                        File photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                        } catch (IOException exception) {
+
+                        } if (photoFile != null) {
+                            Uri photoUri = FileProvider.getUriForFile(getApplicationContext(),"com.example.android.fileprovider", photoFile);
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                            startActivityForResult(takePictureIntent, WINE_IMAGE);
+                        }
+                    }
+                };
+        });
     }
+
+    /**
+     * Create image file for each wine
+     */
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMMMdd_hhmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp;
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
 
 
     /**
      * Set up spinner that allows user to pick the wine colour; default set to unknown
-     */
+     **/
+
     private void setupSpinnner() {
 
         ArrayAdapter colourSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.array_wine_colour, android.R.layout.simple_spinner_item);
@@ -191,6 +323,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
+    @Override
+    public void onRestart() {
+
+        super.onRestart();
+
+        // check if image has been updated and change preview (before database is updated).
+        // This is for a better user experience and prevents user uploading photo again.
+        if (currentPhotoPath != null) {
+            Uri imagePreview = Uri.parse(currentPhotoPath);
+            wineImageView.setImageURI(imagePreview);
+        } else {
+            wineImageView.setImageResource(R.drawable.add_photo);
+        };
+    }
+
     /**
      * Get user input from editor and save new wine into database
      */
@@ -199,13 +346,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String nameString = nameEditText.getText().toString().trim();
         String grapeString = grapeEditText.getText().toString().trim();
         String priceString = priceEditText.getText().toString().trim();
+        String imageString = currentPhotoPath;
         String quantityString = quantityEditText.getText().toString();
 
 
-        //check if values are empty and if true - return early
+        //check if values are empty and if true - throw warning toast message and return
         if (currentWineUri == null && TextUtils.isEmpty(nameString)
-                && TextUtils.isEmpty(grapeString)
-                && wineColour == WineEntry.COLOUR_UNKNOWN) {
+                || TextUtils.isEmpty(grapeString) || TextUtils.isEmpty(priceString)) {
+            Toast.makeText(this, R.string.wine_edit_unsuccessful, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -214,6 +362,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(WineEntry.COLUMN_WINE_NAME, nameString);
         values.put(WineEntry.COLUMN_WINE_GRAPE, grapeString);
         values.put(WineEntry.COLUMN_WINE_PRICE, priceString);
+        values.put(WineEntry.COLUMN_WINE_IMAGE, imageString);
         values.put(WineEntry.COLUMN_WINE_QUANTITY, quantityString);
         values.put(WineEntry.COLUMN_WINE_COLOUR, wineColour);
 
@@ -280,7 +429,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
 
     /**
      * method for warning user hasn't saved data before exiting editor
@@ -358,6 +506,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 WineEntry.COLUMN_WINE_NAME,
                 WineEntry.COLUMN_WINE_GRAPE,
                 WineEntry.COLUMN_WINE_PRICE,
+                WineEntry.COLUMN_WINE_IMAGE,
                 WineEntry.COLUMN_WINE_QUANTITY,
                 WineEntry.COLUMN_WINE_COLOUR};
         // run on background thread
@@ -373,6 +522,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int nameColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_NAME);
             int grapeColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_GRAPE);
             int priceColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_PRICE);
+            int imageColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_IMAGE);
             int colourColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_COLOUR);
             int quantityColumnIndex = cursor.getColumnIndex(WineEntry.COLUMN_WINE_QUANTITY);
 
@@ -380,38 +530,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String name = cursor.getString(nameColumnIndex);
             String grape = cursor.getString(grapeColumnIndex);
             String price = cursor.getString(priceColumnIndex);
+            String image = cursor.getString(imageColumnIndex);
             int colour = cursor.getInt(colourColumnIndex);
             wineQuantity = cursor.getInt(quantityColumnIndex);
-
-            //on Click listeners for increasing or decreasing quantity
-            increaseQuantity.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    wineQuantity += 1;
-                    quantityEditText.setText(Integer.toString(wineQuantity));
-                }
-
-            });
-
-            decreaseQuantity.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    wineQuantity -= 1;
-                    if (wineQuantity < 0 ) {
-                        wineQuantity = 0;
-                    }
-                    quantityEditText.setText(Integer.toString(wineQuantity));
-                }
-
-            });
 
             // replace placeholders
             nameEditText.setText(name);
             grapeEditText.setText(grape);
             priceEditText.setText(price);
             quantityEditText.setText(Integer.toString(wineQuantity));
+
+            //Find and set image Placeholder or replace with taken photo
+            if (image == null || imageColumnIndex == 0) {
+                wineImageView.setImageResource(R.drawable.add_photo);
+            } else {
+                Uri imageUri = Uri.parse(image);
+                wineImageView.setImageURI(imageUri);
+            }
 
 
             // map the constant value for colour against the dropdown options, and display accordingly

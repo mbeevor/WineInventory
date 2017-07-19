@@ -121,18 +121,6 @@ public class WineProvider extends ContentProvider {
 
     private Uri insertWine(Uri uri, ContentValues values) {
 
-        // Sanity check that the wine name has been entered
-        String name = values.getAsString(WineEntry.COLUMN_WINE_NAME);
-        if (name == null || name.length() == 0) {
-            throw new IllegalArgumentException("Wine name required");
-        }
-
-        // Sanity check that wine colour has been set, or set to unknown
-        Integer colour = values.getAsInteger(WineEntry.COLUMN_WINE_COLOUR);
-        if (colour == null || !WineEntry.isValidColour(colour)) {
-            throw new IllegalArgumentException("Please pick a wine colour");
-        }
-
         // access writeable database
         SQLiteDatabase database = wineDatabaseHelper.getWritableDatabase();
 

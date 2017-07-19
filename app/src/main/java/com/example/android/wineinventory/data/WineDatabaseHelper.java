@@ -37,6 +37,7 @@ public class WineDatabaseHelper extends SQLiteOpenHelper {
                 + WineEntry.COLUMN_WINE_NAME + " TEXT NOT NULL, "
                 + WineEntry.COLUMN_WINE_GRAPE + " TEXT, "
                 + WineEntry.COLUMN_WINE_PRICE + " REAL, "
+                + WineEntry.COLUMN_WINE_IMAGE + " TEXT, "
                 + WineEntry.COLUMN_WINE_COLOUR + " INTEGER NOT NULL, "
                 + WineEntry.COLUMN_WINE_QUANTITY + " TEXT);";
 

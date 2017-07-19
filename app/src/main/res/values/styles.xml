@@ -174,4 +174,12 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
+    <!-- style for wine image -->
+    <style name="wineImageView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
 </resources>
