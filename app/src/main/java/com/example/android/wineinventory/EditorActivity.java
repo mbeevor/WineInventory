@@ -183,10 +183,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         decreaseQuantity = (Button) findViewById(R.id.decrease_quantity_button);
         orderMore = (Button) findViewById(R.id.order_more_button);
 
-        if (imageUri == null) {
-            // Set placeholder image for image view
-            wineImageView.setImageResource(R.drawable.add_photo);
-        }
+        // Set placeholder image for image view
+        wineImageView.setImageResource(R.drawable.add_photo);
 
         //set on touch listeners to prevent accidental data loss
         nameEditText.setOnTouchListener(onTouchListener);
@@ -342,6 +340,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // This is for a better user experience and prevents user uploading photo again.
         if (imageUri != null) {
             wineImageView.setImageURI(imageUri);
+        } else {
+            wineImageView.setImageResource(R.drawable.add_photo);
         }
 
     }
@@ -358,7 +358,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (imageUri != null) {
             imageString = imageUri.toString();
         } else {
-            imageString = getResources().getResourcePackageName(R.drawable.add_photo);
+            imageString = null;
+            wineImageView.setImageResource(R.drawable.add_photo);
         }
         String quantityString = quantityEditText.getText().toString();
 
@@ -557,13 +558,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             quantityEditText.setText(Integer.toString(wineQuantity));
 
             // null exception for image; update if image provided
-            if (image == null) {
-                imageUri = Uri.parse(getResources().getResourceEntryName(R.drawable.add_photo));
-                Log.v("null exception", "imageUri = " + imageUri);
-                wineImageView.setImageURI(imageUri);
-            } else {
+            if (image != null) {
                 imageUri = Uri.parse(image);
                 wineImageView.setImageURI(imageUri);
+            } else {
+                wineImageView.setImageResource(R.drawable.add_photo);
             }
 
 
