@@ -32,6 +32,8 @@ import android.widget.Toast;
 
 import com.example.android.wineinventory.data.WineContract.WineEntry;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InvalidClassException;
@@ -49,10 +51,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private static final int EXISTING_WINE_LOADER = 0;
 
     /**
-     * integer for capturing photo of wine
+     * integer for capturing photo of wine and global URI variable
      */
     static final int WINE_IMAGE = 1;
-
+    public Uri imageUri;
     /**
      * Path for saving photo on device
      */
@@ -180,8 +182,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         decreaseQuantity = (Button) findViewById(R.id.decrease_quantity_button);
         orderMore = (Button) findViewById(R.id.order_more_button);
 
-        // set image prewiew to add_photo image
-        wineImageView.setImageResource(R.drawable.add_photo);
+        if (imageUri == null) {
+            // Set placeholder image for image view
+            wineImageView.setImageResource(R.drawable.add_photo);
+        }
 
         //set on touch listeners to prevent accidental data loss
         nameEditText.setOnTouchListener(onTouchListener);
@@ -190,6 +194,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         wineImageView.setOnTouchListener(onTouchListener);
         colourSpinner.setOnTouchListener(onTouchListener);
         quantityEditText.setOnTouchListener(onTouchListener);
+        increaseQuantity.setOnTouchListener(onTouchListener);
+        decreaseQuantity.setOnTouchListener(onTouchListener);
 
         setupSpinnner();
 
@@ -254,24 +260,27 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             @Override
             public void onClick(View view) {
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // check there is a camera available
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        // create new image file
-                        File photoFile = null;
-                        try {
-                            photoFile = createImageFile();
-                        } catch (IOException exception) {
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    // create new image file
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException exception) {
 
-                        } if (photoFile != null) {
-                            Uri photoUri = FileProvider.getUriForFile(getApplicationContext(),"com.example.android.fileprovider", photoFile);
-                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                            startActivityForResult(takePictureIntent, WINE_IMAGE);
-                        }
                     }
-                };
+                    if (photoFile != null) {
+                        imageUri = FileProvider.getUriForFile(getApplicationContext(), "com.example.android.fileprovider", photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                        startActivityForResult(takePictureIntent, WINE_IMAGE);
+                    }
+                }
+            }
         });
+
     }
+
 
     /**
      * Create image file for each wine
@@ -284,7 +293,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
-
 
 
     /**
@@ -331,11 +339,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // check if image has been updated and change preview (before database is updated).
         // This is for a better user experience and prevents user uploading photo again.
         if (currentPhotoPath != null) {
-            Uri imagePreview = Uri.parse(currentPhotoPath);
-            wineImageView.setImageURI(imagePreview);
-        } else {
-            wineImageView.setImageResource(R.drawable.add_photo);
-        };
+            wineImageView.setImageURI(imageUri);
+        }
+
     }
 
     /**
@@ -351,8 +357,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
 
         //check if values are empty and if true - throw warning toast message and return
-        if (currentWineUri == null && TextUtils.isEmpty(nameString)
-                || TextUtils.isEmpty(grapeString) || TextUtils.isEmpty(priceString)) {
+        if (currentWineUri == null
+                && TextUtils.isEmpty(nameString)
+                || TextUtils.isEmpty(grapeString)
+                || TextUtils.isEmpty(priceString)
+                || TextUtils.isEmpty(quantityString)) {
             Toast.makeText(this, R.string.wine_edit_unsuccessful, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -540,14 +549,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             priceEditText.setText(price);
             quantityEditText.setText(Integer.toString(wineQuantity));
 
-            //Find and set image Placeholder or replace with taken photo
-            if (image == null || imageColumnIndex == 0) {
-                wineImageView.setImageResource(R.drawable.add_photo);
-            } else {
-                Uri imageUri = Uri.parse(image);
+            // null exception for image; update if image provided
+            if (image != null) {
+                imageUri = Uri.parse(image);
                 wineImageView.setImageURI(imageUri);
             }
-
 
             // map the constant value for colour against the dropdown options, and display accordingly
             switch (colour) {
