@@ -116,7 +116,7 @@
                 tools:text="1" />
 
             <Button
-                android:id="@+id/increas_quantity_button"
+                android:id="@+id/increase_quantity_button"
                 style="@style/quantityChangeButton"
                 android:text="+" />
 

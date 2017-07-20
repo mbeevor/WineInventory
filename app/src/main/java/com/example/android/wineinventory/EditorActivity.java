@@ -55,6 +55,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      */
     static final int WINE_IMAGE = 1;
     public Uri imageUri;
+
     /**
      * Path for saving photo on device
      */
@@ -178,7 +179,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         wineImageView = (ImageView) findViewById(R.id.wine_image_view);
         colourSpinner = (Spinner) findViewById(R.id.spinner_wine_colour);
         quantityEditText = (EditText) findViewById(R.id.edit_wine_quantity);
-        increaseQuantity = (Button) findViewById(R.id.increas_quantity_button);
+        increaseQuantity = (Button) findViewById(R.id.increase_quantity_button);
         decreaseQuantity = (Button) findViewById(R.id.decrease_quantity_button);
         orderMore = (Button) findViewById(R.id.order_more_button);
 
@@ -265,6 +266,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     // create new image file
                     File photoFile = null;
+
                     try {
                         photoFile = createImageFile();
                     } catch (IOException exception) {
@@ -338,7 +340,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // check if image has been updated and change preview (before database is updated).
         // This is for a better user experience and prevents user uploading photo again.
-        if (currentPhotoPath != null) {
+        if (imageUri != null) {
             wineImageView.setImageURI(imageUri);
         }
 
@@ -352,7 +354,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String nameString = nameEditText.getText().toString().trim();
         String grapeString = grapeEditText.getText().toString().trim();
         String priceString = priceEditText.getText().toString().trim();
-        String imageString = currentPhotoPath;
+        String imageString;
+        if (imageUri != null) {
+            imageString = imageUri.toString();
+        } else {
+            imageString = getResources().getResourcePackageName(R.drawable.add_photo);
+        }
         String quantityString = quantityEditText.getText().toString();
 
 
@@ -550,10 +557,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             quantityEditText.setText(Integer.toString(wineQuantity));
 
             // null exception for image; update if image provided
-            if (image != null) {
+            if (image == null) {
+                imageUri = Uri.parse(getResources().getResourceEntryName(R.drawable.add_photo));
+                Log.v("null exception", "imageUri = " + imageUri);
+                wineImageView.setImageURI(imageUri);
+            } else {
                 imageUri = Uri.parse(image);
                 wineImageView.setImageURI(imageUri);
             }
+
 
             // map the constant value for colour against the dropdown options, and display accordingly
             switch (colour) {
